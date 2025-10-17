@@ -1,72 +1,104 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import ProductSelector from "./ProductSelector";
-import { products } from "../data/products";
+import OrderSummary from "./OrderSummary";
+import { toTwoDecimals } from "../utils";
 
-export default function OrderForm({ onAddOrder }) {
-  const [clientName, setClientName] = useState("");
+export default function OrderForm({ products, onCreate }) {
+  const [customerName, setCustomerName] = useState("");
   const [phone, setPhone] = useState("");
-  const [selectedProduct, setSelectedProduct] = useState("");
-  const [quantity, setQuantity] = useState(1);
+  const [selected, setSelected] = useState([]); // {productId, qty}
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  function handleAddProduct(productId, qty) {
+    qty = Number(qty);
+    if (!qty || qty <= 0) return;
+    setSelected((prev) => {
+      const exist = prev.find((p) => p.productId === productId);
+      if (exist) {
+        return prev.map((p) =>
+          p.productId === productId ? { ...p, qty: p.qty + qty } : p
+        );
+      }
+      return [...prev, { productId, qty }];
+    });
+  }
 
-    if (!clientName || !phone || !selectedProduct) {
-      alert("Veuillez remplir tous les champs !");
-      return;
+  function handleRemove(productId) {
+    setSelected((prev) => prev.filter((p) => p.productId !== productId));
+  }
+
+  function computeTotal() {
+    // calculer produit par produit, arrondir chaque sous-total puis somme
+    let total = 0;
+    for (const line of selected) {
+      const prod = products.find((p) => p.id === line.productId);
+      const sub = prod.price * line.qty;
+      total += toTwoDecimals(sub);
     }
+    return toTwoDecimals(total);
+  }
 
-    const product = products.find((p) => p.id === parseInt(selectedProduct));
-    const subtotal = product.price * quantity;
-
-    const newOrder = {
-      id: Date.now(),
-      clientName,
-      phone,
-      productName: product.name,
-      price: product.price,
-      quantity,
-      subtotal,
+  function handleSubmit(e) {
+    e.preventDefault();
+    if (!customerName.trim()) return alert("Nom du client requis");
+    if (!selected.length) return alert("Sélectionnez au moins un produit");
+    const order = {
+      customerName: customerName.trim(),
+      phone: phone.trim(),
+      lines: selected,
+      total: computeTotal(),
+      status: "En attente",
     };
-
-    onAddOrder(newOrder);
-
-    // Reset form
-    setClientName("");
+    onCreate(order);
+    // reset
+    setCustomerName("");
     setPhone("");
-    setSelectedProduct("");
-    setQuantity(1);
-  };
+    setSelected([]);
+  }
 
   return (
-    <form onSubmit={handleSubmit} className="order-form">
-      <input
-        type="text"
-        placeholder="Nom du client"
-        value={clientName}
-        onChange={(e) => setClientName(e.target.value)}
-      />
-
-      <input
-        type="number"
-        placeholder="Téléphone"
-        value={phone}
-        onChange={(e) => setPhone(e.target.value)}
-      />
+    <form onSubmit={handleSubmit}>
+      <div className="row">
+        <input
+          className="input"
+          placeholder="Nom du client"
+          value={customerName}
+          onChange={(e) => setCustomerName(e.target.value)}
+        />
+        <input
+          className="input"
+          placeholder="Téléphone"
+          value={phone}
+          onChange={(e) => setPhone(e.target.value)}
+        />
+      </div>
 
       <ProductSelector
-        selectedProduct={selectedProduct}
-        onChange={(e) => setSelectedProduct(e.target.value)}
+        products={products}
+        onAdd={handleAddProduct}
+        selected={selected}
+        onRemove={handleRemove}
       />
 
-      <input
-        type="number"
-        min="1"
-        value={quantity}
-        onChange={(e) => setQuantity(parseInt(e.target.value))}
+      <OrderSummary
+        products={products}
+        lines={selected}
+        total={computeTotal()}
       />
 
-      <button type="submit">Ajouter la commande</button>
+      <div style={{ marginTop: 12, display: "flex", gap: 8 }}>
+        <button type="submit" className="btn btn-primary">
+          Valider la commande
+        </button>
+        <button
+          type="button"
+          className="btn btn-ghost"
+          onClick={() => {
+            setSelected([]);
+          }}
+        >
+          Réinitialiser
+        </button>
+      </div>
     </form>
   );
 }

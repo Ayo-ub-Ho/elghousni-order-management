@@ -1,11 +1,11 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import './App.css'
+import "./App.css";
 import { useState } from "react";
 import Header from "./Components/Heder";
 import Sidebar from "./Components/Sidebar";
 import OrderForm from "./Components/OrderForm";
-import OrderSummary from "./Components/OrderSummary"
+import OrderSummary from "./Components/OrderSummary";
 
 function App() {
   const [currentPage, setCurrentPage] = useState("nouvelle");

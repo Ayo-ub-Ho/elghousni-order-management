@@ -1,5 +1,4 @@
-
-
+// src/data/products.js
 export const products = [
   {
     id: 1,
@@ -7,7 +6,7 @@ export const products = [
     category: "Huiles",
     price: 80,
     unit: "bouteille",
-    image: "/assets/images/huile750.png"
+    image: "/assets/images/huile750.png",
   },
   {
     id: 2,
@@ -15,7 +14,7 @@ export const products = [
     category: "Huiles",
     price: 100,
     unit: "bouteille",
-    image: "/assets/images/huile1l.png"
+    image: "/assets/images/huile1l.png",
   },
   {
     id: 3,
@@ -23,7 +22,7 @@ export const products = [
     category: "Olives",
     price: 35,
     unit: "bocal",
-    image: "/assets/images/olives-naturelles.png"
+    image: "/assets/images/olives-naturelles.png",
   },
   {
     id: 4,
@@ -31,7 +30,7 @@ export const products = [
     category: "Olives",
     price: 40,
     unit: "bocal",
-    image: "/assets/images/olives-marinees.png"
+    image: "/assets/images/olives-marinees.png",
   },
   {
     id: 5,
@@ -39,7 +38,7 @@ export const products = [
     category: "Tapenade",
     price: 45,
     unit: "pot",
-    image: "/assets/images/tapenade.png"
+    image: "/assets/images/tapenade.png",
   },
   {
     id: 6,
@@ -47,7 +46,7 @@ export const products = [
     category: "Miel",
     price: 60,
     unit: "pot",
-    image: "/assets/images/miel.png"
+    image: "/assets/images/miel.png",
   },
   {
     id: 7,
@@ -55,7 +54,7 @@ export const products = [
     category: "Produits dérivés",
     price: 25,
     unit: "pièce",
-    image: "/assets/images/savon.png"
+    image: "/assets/images/savon.png",
   },
   {
     id: 8,
@@ -63,6 +62,8 @@ export const products = [
     category: "Produits dérivés",
     price: 35,
     unit: "pot",
-    image: "/assets/images/confiture.png"
-  }
+    image: "/assets/images/confiture.png",
+  },
 ];
+
+export default products;

@@ -1,0 +1,117 @@
+/* src/styles/App.css */
+:root {
+  --bg: #f7f7f5;
+  --card: #ffffff;
+  --muted: #6b7280;
+  --primary: #2b7a2b; /* vert olive */
+  --accent: #f59e0b;
+  --danger: #ef4444;
+  --pending: #f59e0b;
+  --prepared: #3b82f6;
+  --delivered: #10b981;
+}
+
+body {
+  font-family: Inter, system-ui, Arial, sans-serif;
+  background: var(--bg);
+  margin: 0;
+  padding: 20px;
+  color: #111827;
+  direction: ltr;
+}
+
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 420px 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+/* Cards */
+.card {
+  background: var(--card);
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06);
+}
+
+/* Form */
+.order-form .row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+.input,
+select {
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  width: 100%;
+}
+
+/* Buttons */
+.btn {
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+}
+.btn-primary {
+  background: var(--primary);
+  color: white;
+}
+.btn-danger {
+  background: var(--danger);
+  color: white;
+}
+.btn-ghost {
+  background: transparent;
+  border: 1px solid #e5e7eb;
+}
+
+/* Order list */
+.orders-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.order-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Badge */
+.status-badge {
+  padding: 6px 10px;
+  border-radius: 999px;
+  color: white;
+  font-weight: 600;
+  font-size: 13px;
+}
+
+/* Colors per status */
+.status-pending {
+  background: var(--pending);
+}
+.status-prepared {
+  background: var(--prepared);
+}
+.status-delivered {
+  background: var(--delivered);
+}
+
+.small-muted {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.product-line {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 6px;
+}
