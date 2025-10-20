@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import ProductSelector from "./ProductSelector";
+import { useState } from "react";
+import ProductSelector from "./ProductSelector.jsx";
 import OrderSummary from "./OrderSummary";
 import { toTwoDecimals } from "../utils";
 

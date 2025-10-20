@@ -1,61 +1,66 @@
-import "bootstrap/dist/css/bootstrap.min.css";
-import "bootstrap-icons/font/bootstrap-icons.css";
-import "./App.css";
-import { useState } from "react";
-import Header from "./Components/Heder";
-import Sidebar from "./Components/Sidebar";
-import OrderForm from "./Components/OrderForm";
-import OrderSummary from "./Components/OrderSummary";
+import { useEffect, useState } from "react";
+import OrderForm from "./OrderForm";
+import OrderList from "./OrderList";
+import FilterBar from "./FilterBar";
+import "../styles/App.css";
+import products from "../data/products";
 
-function App() {
-  const [currentPage, setCurrentPage] = useState("nouvelle");
+const STORAGE_KEY = "elghousni_orders_v1";
+
+export default function App() {
   const [orders, setOrders] = useState([]);
-  const [total, setTotal] = useState(0);
+  const [filter, setFilter] = useState("Toutes");
 
-  const handleAddOrder = (order) => {
-    setOrders([...orders, order]);
-    setTotal(total + order.subtotal);
-  };
+  useEffect(() => {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) setOrders(JSON.parse(saved));
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(orders));
+  }, [orders]);
+
+  function addOrder(order) {
+    // ajoute id et date
+    const newOrder = {
+      ...order,
+      id: Date.now(),
+      createdAt: new Date().toISOString(),
+    };
+    setOrders((prev) => [newOrder, ...prev]);
+  }
+
+  function updateOrderStatus(id, status) {
+    setOrders((prev) => prev.map((o) => (o.id === id ? { ...o, status } : o)));
+  }
+
+  function deleteOrder(id) {
+    setOrders((prev) => prev.filter((o) => o.id !== id));
+  }
 
   return (
-    <div className="App">
-      <div className="header-sidebar">
-        {/* Header */}
-        <Header />
+    <div className="container">
+      <div>
+        <div className="card order-form">
+          <h2>Nouvelle commande</h2>
+          <OrderForm products={products} onCreate={addOrder} />
+        </div>
 
-        {/* Sidebar */}
-        <Sidebar currentPage={currentPage} onNavigate={setCurrentPage} />
+        <div style={{ marginTop: 16 }} className="card">
+          <h3>Filtre & Statistiques</h3>
+          <FilterBar filter={filter} setFilter={setFilter} orders={orders} />
+        </div>
       </div>
 
-      {/* Contenu principal */}
-      <main
-        className="p-4"
-        style={{ marginLeft: "260px", marginTop: "90px", minHeight: "100vh" }}
-      >
-        {currentPage === "nouvelle" && (
-          <>
-            <h3 className="mb-3 text-success"> Nouvelle commande</h3>
-            <OrderForm onAddOrder={handleAddOrder} />
-            <OrderSummary total={total} />
-          </>
-        )}
-
-        {currentPage === "liste" && (
-          <>
-            <h3 className="mb-3 text-success">📋 Liste des commandes</h3>
-            <ul className="list-group">
-              {orders.map((order) => (
-                <li key={order.id} className="list-group-item">
-                  <strong>{order.clientName}</strong> — {order.productName} x{" "}
-                  {order.quantity} = {order.subtotal} DH
-                </li>
-              ))}
-            </ul>
-          </>
-        )}
-      </main>
+      <div className="card">
+        <h2>Toutes les commandes</h2>
+        <OrderList
+          orders={orders}
+          filter={filter}
+          onChangeStatus={updateOrderStatus}
+          onDelete={deleteOrder}
+        />
+      </div>
     </div>
   );
 }
-
-export default App;

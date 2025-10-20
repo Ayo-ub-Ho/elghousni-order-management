@@ -1,5 +1,3 @@
-// src/components/OrderSummary.jsx
-import React from "react";
 import { toTwoDecimals } from "../utils";
 
 export default function OrderSummary({ products, lines, total }) {

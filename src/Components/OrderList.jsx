@@ -1,5 +1,4 @@
-// src/components/OrderList.jsx
-import React, { useState } from "react";
+import { useState } from "react";
 import OrderCard from "./OrderCard";
 import products from "../data/products";
 

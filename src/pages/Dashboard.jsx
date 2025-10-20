@@ -1,5 +1,3 @@
-// src/pages/Dashboard.jsx
-import React from "react";
 import { Link } from "react-router-dom";
 import useStore from "../store/useStore";
 import "../styles/Dashboard.css";

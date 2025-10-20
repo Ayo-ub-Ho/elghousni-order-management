@@ -1,5 +1,4 @@
-// src/components/ProductSelector.jsx
-import React, { useState } from "react";
+import { useState } from "react";
 
 export default function ProductSelector({
   products,

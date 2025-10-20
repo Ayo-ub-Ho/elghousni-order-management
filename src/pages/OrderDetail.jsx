@@ -1,5 +1,3 @@
-// src/pages/OrderDetail.jsx
-import React from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import useStore from "../store/useStore";
 import StatusBadge from "../components/StatusBadge";

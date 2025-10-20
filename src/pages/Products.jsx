@@ -1,5 +1,5 @@
 // src/pages/Products.jsx
-import React, { useState } from "react";
+import { useState } from "react";
 import useStore from "../store/useStore";
 import "../styles/Products.css";
 
@@ -75,6 +75,19 @@ export default function Products() {
       <div className="products-grid">
         {products.map((product) => (
           <div key={product.id} className="product-card card">
+            {/* Image du produit */}
+            <div className="product-image-container">
+              <img
+                src={product.image}
+                alt={product.name}
+                className="product-image"
+                onError={(e) => {
+                  e.target.src =
+                    "https://via.placeholder.com/300x300/667eea/ffffff?text=Image";
+                }}
+              />
+            </div>
+
             <div className="product-header">
               <h3>{product.name}</h3>
               <span className="product-category">{product.category}</span>
@@ -123,6 +136,7 @@ function ProductForm({ product, onSubmit, onCancel }) {
     category: product?.category || "Huiles",
     price: product?.price || "",
     unit: product?.unit || "bouteille",
+    image: product?.image || "",
   });
 
   const handleChange = (e) => {
@@ -216,7 +230,52 @@ function ProductForm({ product, onSubmit, onCancel }) {
             <option value="litre">litre</option>
           </select>
         </div>
+
+        <div className="form-group" style={{ gridColumn: "1 / -1" }}>
+          <label htmlFor="image">URL de l'image</label>
+          <input
+            id="image"
+            name="image"
+            type="text"
+            className="input"
+            value={formData.image}
+            onChange={handleChange}
+            placeholder="/assets/images/produit.jpg"
+          />
+          <small
+            style={{
+              color: "#666",
+              fontSize: "0.875rem",
+              marginTop: "0.25rem",
+              display: "block",
+            }}
+          >
+            Chemin de l'image (ex: /assets/images/huile.jpg)
+          </small>
+        </div>
       </div>
+
+      {/* Aperçu de l'image */}
+      {formData.image && (
+        <div className="image-preview">
+          <label>Aperçu :</label>
+          <img
+            src={formData.image}
+            alt="Aperçu"
+            style={{
+              width: "150px",
+              height: "150px",
+              objectFit: "cover",
+              borderRadius: "8px",
+              border: "2px solid #e0e0e0",
+              marginTop: "0.5rem",
+            }}
+            onError={(e) => {
+              e.target.style.display = "none";
+            }}
+          />
+        </div>
+      )}
 
       <div className="form-actions">
         <button type="submit" className="btn btn-primary">
