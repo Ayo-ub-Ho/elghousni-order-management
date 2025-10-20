@@ -1,4 +1,3 @@
-// src/pages/Products.jsx
 import { useState } from "react";
 import useStore from "../store/useStore";
 import "../styles/Products.css";
